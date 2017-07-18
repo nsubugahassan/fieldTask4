@@ -33,62 +33,62 @@ public class NetworkReceiver extends BroadcastReceiver implements TaskDownloader
     public static boolean running = false;
     InstanceUploaderTask mInstanceUploaderTask;
     public DownloadTasksTask mDownloadTasks;
-    Context mContext = null;		// smap
+    Context mContext = null;        // smap
 
 
-   @Override
-	public void onReceive(Context context, Intent intent) {
+    @Override
+    public void onReceive(Context context, Intent intent) {
         // make sure sd card is ready, if not don't try to send
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             return;
         }
 
-		String action = intent.getAction();
-		ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo currentNetworkInfo = manager.getActiveNetworkInfo();
+        String action = intent.getAction();
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo currentNetworkInfo = manager.getActiveNetworkInfo();
 
-		if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-			if (currentNetworkInfo != null && currentNetworkInfo.getState() == NetworkInfo.State.CONNECTED) {
-				if (interfaceIsEnabled(context, currentNetworkInfo)) {
-					//uploadForms(context);
+        if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+            if (currentNetworkInfo != null && currentNetworkInfo.getState() == NetworkInfo.State.CONNECTED) {
+                if (interfaceIsEnabled(context, currentNetworkInfo)) {
+                    //uploadForms(context);
                     refreshTasks(context);
-				}
-			}
-		} else if (action.equals("org.odk.collect.android.FormSaved")) {
-			ConnectivityManager connectivityManager = (ConnectivityManager) context
-					.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
+                }
+            }
+        } else if (action.equals("org.odk.collect.android.FormSaved")) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
 
-			if (ni == null || !ni.isConnected()) {
-				// not connected, do nothing
-			} else {
-				if (interfaceIsEnabled(context, ni)) {
-					refreshTasks(context);
-				}
-			}
-		}
-	}
+            if (ni == null || !ni.isConnected()) {
+                // not connected, do nothing
+            } else {
+                if (interfaceIsEnabled(context, ni)) {
+                    refreshTasks(context);
+                }
+            }
+        }
+    }
 
-	private boolean interfaceIsEnabled(Context context,
-			NetworkInfo currentNetworkInfo) {
-		// make sure autosend is enabled on the given connected interface
-		SharedPreferences sharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		boolean sendwifi = sharedPreferences.getBoolean(
-				PreferencesActivity.KEY_AUTOSEND_WIFI, false);
-		boolean sendnetwork = sharedPreferences.getBoolean(
-				PreferencesActivity.KEY_AUTOSEND_NETWORK, false);
+    private boolean interfaceIsEnabled(Context context,
+                                       NetworkInfo currentNetworkInfo) {
+        // make sure autosend is enabled on the given connected interface
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        boolean sendwifi = sharedPreferences.getBoolean(
+                PreferencesActivity.KEY_AUTOSEND_WIFI, false);
+        boolean sendnetwork = sharedPreferences.getBoolean(
+                PreferencesActivity.KEY_AUTOSEND_NETWORK, false);
 
-		return (currentNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI
-				&& sendwifi || currentNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE
-				&& sendnetwork);
-	}
+        return (currentNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI
+                && sendwifi || currentNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE
+                && sendnetwork);
+    }
 
 
     private void refreshTasks(Context context) {
         //mProgressMsg = getString(org.smap.smapTask.android.R.string.smap_synchronising);
         //showDialog(PROGRESS_DIALOG);
-        if(!running) {
+        if (!running) {
             running = true;
             mContext = context;
             mDownloadTasks = new DownloadTasksTask();
@@ -98,6 +98,7 @@ public class NetworkReceiver extends BroadcastReceiver implements TaskDownloader
     }
 
     /*
+     * smap
     private void uploadForms(Context context) {
     	Log.i(getClass().getSimpleName(), "uploadForms: " + running);
         if (!running) {
@@ -204,7 +205,6 @@ public class NetworkReceiver extends BroadcastReceiver implements TaskDownloader
     public void progressUpdate(int progress, int total) {
         // do nothing
     }
-
 
 
     @Override
