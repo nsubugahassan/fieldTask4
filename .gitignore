@@ -5,6 +5,7 @@ local.properties
 .DS_Store
 
 collect_app/src/kontrolid/
+collect_app/src/pop/
 *.iml
 collect_app/collect_app.iml
 
