@@ -2368,13 +2368,13 @@ public class FormEntryActivity extends Activity implements AnimationListener,
                     t.cancel(true);
                     t.destroy();
                     // there is no formController -- fire MainMenu activity?
-                    // startActivity(new Intent(this, MainMenuActivity.class));     // smap
+                    startActivity(new Intent(this, MainTabsActivity.class));     // smap
                 }
             }
         } else {
             if (formController == null) {
                 // there is no formController -- fire MainMenu activity?
-                startActivity(new Intent(this, MainMenuActivity.class));
+                startActivity(new Intent(this, MainTabsActivity.class));        // smap
                 return;
             } else {
                 refreshCurrentView();
